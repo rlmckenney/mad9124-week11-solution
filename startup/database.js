@@ -3,10 +3,10 @@ const mongoose = require('mongoose')
 
 module.exports = () => {
   mongoose
-    .connect(
-      `mongodb://localhost:27017/mad9124`,
-      { useNewUrlParser: true }
-    )
+    .connect(`mongodb://localhost:27017/mad9124`, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    })
     .then(() => {
       debug(`Connected to MongoDB ...`)
     })
