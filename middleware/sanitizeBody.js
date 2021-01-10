@@ -10,7 +10,7 @@ const sanitize = sourceString => {
 }
 
 const stripTags = payload => {
-  let attributes = { ...payload } // return a new object, do not mutate the input object
+  let attributes = {...payload} // return a new object, do not mutate the input object
   for (let key in attributes) {
     if (attributes[key] instanceof Array) {
       debug('Recurse array', attributes[key])
@@ -30,11 +30,11 @@ const stripTags = payload => {
 }
 
 module.exports = (req, res, next) => {
-  debug({ body: req.body })
-  const { id, _id, ...attributes } = req.body
-  debug({ attributes })
+  debug({body: req.body})
+  const {id, _id, ...attributes} = req.body
+  debug({attributes})
   const sanitizedBody = stripTags(attributes)
-  debug({ sanitizedBody })
+  debug({sanitizedBody})
   req.sanitizedBody = sanitizedBody
   next()
 }

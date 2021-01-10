@@ -5,14 +5,14 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   const cars = await Car.find().populate('owner')
-  res.send({ data: cars })
+  res.send({data: cars})
 })
 
 router.post('/', sanitizeBody, async (req, res) => {
   let newCar = new Car(req.sanitizeBody)
   try {
     await newCar.save()
-    res.status(201).send({ data: newCar })
+    res.status(201).send({data: newCar})
   } catch (err) {
     res.status(500).send({
       errors: [
@@ -30,7 +30,7 @@ router.get('/:id', async (req, res) => {
   try {
     const car = await Car.findById(req.params.id).populate('owner')
     if (!car) throw new Error('Resource not found')
-    res.send({ data: car })
+    res.send({data: car})
   } catch (err) {
     sendResourceNotFound(req, res)
   }
@@ -48,7 +48,7 @@ const update = (overwrite = false) => async (req, res) => {
       }
     )
     if (!course) throw new Error('Resource not found')
-    res.send({ data: course })
+    res.send({data: course})
   } catch (err) {
     sendResourceNotFound(req, res)
   }
@@ -60,19 +60,18 @@ router.delete('/:id', async (req, res) => {
   try {
     const car = await Car.findByIdAndRemove(req.params.id)
     if (!car) throw new Error('Resource not found')
-    res.send({ data: car })
+    res.send({data: car})
   } catch (err) {
     sendResourceNotFound(req, res)
   }
 })
 
-function sendResourceNotFound (req, res) {
+function sendResourceNotFound(req, res) {
   console.error(err)
   res.status(404).send({
     error: [
       {
-        status: 'Not Found',
-        code: '404',
+        status: '404',
         title: 'Resource does nto exist',
         description: `We could not find a car with id: ${req.params.id}`
       }

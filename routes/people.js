@@ -5,14 +5,14 @@ const router = express.Router()
 
 router.get('/', async (req, res) => {
   const collection = await Person.find()
-  res.send({ data: collection })
+  res.send({data: collection})
 })
 
 router.post('/', sanitizeBody, async (req, res) => {
   let newDocument = new Person(req.sanitizeBody)
   await newDocument.save()
 
-  res.status(201).send({ data: newDocument })
+  res.status(201).send({data: newDocument})
 })
 
 router.get('/:id', async (req, res) => {
@@ -20,7 +20,7 @@ router.get('/:id', async (req, res) => {
     const document = await Person.findById(req.params.id)
     if (!document) throw new Error('Resource not found')
 
-    res.send({ data: document })
+    res.send({data: document})
   } catch (err) {
     sendResourceNotFound(req, res)
   }
@@ -38,7 +38,7 @@ const update = (overwrite = false) => async (req, res) => {
       }
     )
     if (!course) throw new Error('Resource not found')
-    res.send({ data: course })
+    res.send({data: course})
   } catch (err) {
     sendResourceNotFound(req, res)
   }
@@ -50,18 +50,17 @@ router.delete('/:id', async (req, res) => {
   try {
     const document = await Person.findByIdAndRemove(req.params.id)
     if (!document) throw new Error('Resource not found')
-    res.send({ data: document })
+    res.send({data: document})
   } catch (err) {
     sendResourceNotFound(req, res)
   }
 })
 
-function sendResourceNotFound (req, res) {
+function sendResourceNotFound(req, res) {
   res.status(404).send({
     error: [
       {
-        status: 'Not Found',
-        code: '404',
+        status: '404',
         title: 'Resource does nto exist',
         description: `We could not find a person with id: ${req.params.id}`
       }
