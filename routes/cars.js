@@ -1,27 +1,31 @@
-const sanitizeBody = require('../middleware/sanitizeBody')
-const Car = require('../models/Car')
-const express = require('express')
+import createDebug from 'debug'
+import sanitizeBody from '../middleware/sanitizeBody.js'
+import Car from '../models/Car.js'
+import express from 'express'
+
+const debug = createDebug('week8:routes:cars')
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const cars = await Car.find().populate('owner')
-  res.send({data: cars})
+  const collection = await Car.find().populate('owner')
+  res.send({ data: collection })
 })
 
 router.post('/', sanitizeBody, async (req, res) => {
-  let newCar = new Car(req.sanitizeBody)
+  let newDocument = new Car(req.sanitizedBody)
   try {
-    await newCar.save()
-    res.status(201).send({data: newCar})
+    await newDocument.save()
+    res.status(201).send({ data: newDocument })
   } catch (err) {
+    debug(err)
     res.status(500).send({
       errors: [
         {
-          status: 'Server error',
-          code: '500',
-          title: 'Problem saving document to the database.'
-        }
-      ]
+          status: '500',
+          title: 'Server error',
+          description: 'Problem saving document to the database.',
+        },
+      ],
     })
   }
 })
@@ -30,7 +34,7 @@ router.get('/:id', async (req, res) => {
   try {
     const car = await Car.findById(req.params.id).populate('owner')
     if (!car) throw new Error('Resource not found')
-    res.send({data: car})
+    res.send({ data: car })
   } catch (err) {
     sendResourceNotFound(req, res)
   }
@@ -44,39 +48,38 @@ const update = (overwrite = false) => async (req, res) => {
       {
         new: true,
         overwrite,
-        runValidators: true
+        runValidators: true,
       }
     )
     if (!course) throw new Error('Resource not found')
-    res.send({data: course})
+    res.send({ data: course })
   } catch (err) {
     sendResourceNotFound(req, res)
   }
 }
-router.put('/:id', sanitizeBody, update((overwrite = true)))
-router.patch('/:id', sanitizeBody, update((overwrite = false)))
+router.put('/:id', sanitizeBody, update(true))
+router.patch('/:id', sanitizeBody, update(false))
 
 router.delete('/:id', async (req, res) => {
   try {
     const car = await Car.findByIdAndRemove(req.params.id)
     if (!car) throw new Error('Resource not found')
-    res.send({data: car})
+    res.send({ data: car })
   } catch (err) {
     sendResourceNotFound(req, res)
   }
 })
 
 function sendResourceNotFound(req, res) {
-  console.error(err)
   res.status(404).send({
     error: [
       {
         status: '404',
         title: 'Resource does nto exist',
-        description: `We could not find a car with id: ${req.params.id}`
-      }
-    ]
+        description: `We could not find a car with id: ${req.params.id}`,
+      },
+    ],
   })
 }
 
-module.exports = router
+export default router

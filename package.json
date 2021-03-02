@@ -1,25 +1,32 @@
 {
-  "name": "mad9124-week8",
-  "version": "0.2.0",
-  "description": "In class exercise: Authentication with JWT",
-  "main": "app.js",
+  "name": "week8",
+  "version": "0.1.0",
+  "description": "MAD9124 JWT Auth demo",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "dev": "DEBUG=week8* NODE_ENV=dev PORT=3030 nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "DEBUG=week8* nodemon server.js"
   },
-  "keywords": [],
+  "keywords": [
+    "express",
+    "mongoose",
+    "jwt"
+  ],
   "author": {
-    "name": "Robert McKenney",
+    "name": "Robert L. McKenney",
     "email": "mckennr@algonquincollege.com"
   },
   "license": "ISC",
-  "private": true,
   "dependencies": {
     "debug": "^4.3.1",
-    "escape-html": "^1.0.3",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.0.2",
-    "mongoose": "^5.11.11",
+    "mongoose": "^5.11.17",
+    "morgan": "^1.10.0",
     "xss": "^1.0.8"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
   }
 }

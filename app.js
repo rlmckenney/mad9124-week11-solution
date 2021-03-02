@@ -1,15 +1,20 @@
-'use strict'
-const debug = require('debug')('week8')
-require('./startup/database')()
+import morgan from 'morgan'
+import express from 'express'
+import sanitizeMongo from 'express-mongo-sanitize'
+import carsRouter from './routes/cars.js'
+import peopleRouter from './routes/people.js'
 
-const express = require('express')
+import connectDatabase from './startup/connectDatabase.js'
+connectDatabase()
+
 const app = express()
 
+app.use(morgan('tiny'))
 app.use(express.json())
-app.use(require('express-mongo-sanitize')())
+app.use(sanitizeMongo())
 
-app.use('/api/cars', require('./routes/cars'))
-app.use('/api/people', require('./routes/people'))
+// routes
+app.use('/api/cars', carsRouter)
+app.use('/api/people', peopleRouter)
 
-const port = process.env.PORT || 3030
-app.listen(port, () => debug(`Express is listening on port ${port} ...`))
+export default app
