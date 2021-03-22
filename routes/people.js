@@ -3,7 +3,7 @@ import sanitizeBody from '../middleware/sanitizeBody.js'
 import Person from '../models/Person.js'
 import express from 'express'
 
-const debug = createDebug('week8:routes:people')
+const debug = createDebug('maddemo:routes:people')
 const router = express.Router()
 
 router.get('/', async (req, res) => {

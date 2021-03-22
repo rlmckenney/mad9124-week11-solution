@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import createDebug from 'debug'
-const debug = createDebug('week8:db')
+const debug = createDebug('maddemo:db')
 
 export default function () {
   mongoose

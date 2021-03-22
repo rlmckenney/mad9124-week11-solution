@@ -1,12 +1,12 @@
 {
-  "name": "week8",
+  "name": "week10",
   "version": "0.1.0",
-  "description": "MAD9124 JWT Auth demo",
+  "description": "MAD9124 Better Errors",
   "main": "server.js",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "DEBUG=week8* nodemon server.js"
+    "start": "DEBUG=maddemo* nodemon server.js"
   },
   "keywords": [
     "express",
@@ -19,9 +19,12 @@
   },
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
     "debug": "^4.3.1",
     "express": "^4.17.1",
     "express-mongo-sanitize": "^2.0.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.11.17",
     "morgan": "^1.10.0",
     "xss": "^1.0.8"
