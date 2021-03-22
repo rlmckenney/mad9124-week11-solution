@@ -4,41 +4,11 @@ import authUser from '../../middleware/authUser.js'
 import express from 'express'
 const router = express.Router()
 
-router.post('/users', sanitizeBody, async (req, res) => {
-  try {
-    const newUser = new User(req.sanitizedBody)
-
-    const itExists = Boolean(
-      await User.countDocuments({ email: newUser.email })
-    )
-
-    if (itExists) {
-      return res.status(400).send({
-        errors: [
-          {
-            status: '400',
-            title: 'Validation Error',
-            description: `Email address ${newUser.email} is already registered`,
-            source: { pointer: '/data/attributes/email' },
-          },
-        ],
-      })
-    }
-    await newUser.save()
-
-    res.status(201).send({ data: newUser })
-  } catch (err) {
-    console.log(err)
-    res.status(500).send({
-      errors: [
-        {
-          status: '500',
-          title: 'Server Error',
-          description: 'Problem saving document to the database',
-        },
-      ],
-    })
-  }
+router.post('/users', sanitizeBody, async (req, res, next) => {
+  new User(req.sanitizedBody)
+    .save()
+    .then((newUser) => res.status(201).send({ data: newUser }))
+    .catch(next)
 })
 
 router.get('/users/me', authUser, async (req, res) => {

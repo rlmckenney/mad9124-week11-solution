@@ -1,5 +1,6 @@
 import createDebug from 'debug'
 import sanitizeBody from '../middleware/sanitizeBody.js'
+import ResourceNotFoundException from '../exceptions/ResourceNotFound.js'
 import { Car } from '../models/index.js'
 import express from 'express'
 
@@ -33,10 +34,14 @@ router.post('/', sanitizeBody, async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const car = await Car.findById(req.params.id).populate('owner')
-    if (!car) throw new Error('Resource not found')
+    if (!car) {
+      throw new ResourceNotFoundException(
+        `Could not find a Car with id: ${req.params.id}`
+      )
+    }
     res.send({ data: car })
   } catch (err) {
-    sendResourceNotFound(req, res)
+    next(err)
   }
 })
 
